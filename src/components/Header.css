@@ -1,12 +1,14 @@
 #header-container {
   position: fixed;
-  padding: 5px;
   background-color: #20232a;
   background: solid;
   top: 0;
   width: 100%;
+  padding: 0;
+  height: 5vh;
+  padding: 0.5vh;
 }
 img {
-  height: 5vh;
+  height: 100%;
   width: auto;
 }

@@ -1,0 +1,12 @@
+#exitButton {
+    position: absolute;
+    right: -0.6rem;
+    top: -0.6rem;
+    width: 2rem;
+    height: auto;
+    cursor: pointer;
+}
+
+#exitButton:hover {
+    opacity: 50%;
+}
