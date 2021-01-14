@@ -1,17 +1,31 @@
 .App {
   text-align: center;
-}
-
-.App-header {
-  background-color: #282c34;
+  background-color: #fff;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   font-size: calc(10px + 2vmin);
-  color: white;
-  margin-top: 5vh;
+  margin-top: 6vh;
 }
 
-.App-link {
-  color: #61dafb;
+#App-header {
+  z-index: 5;
+  position: fixed;
+  background-color: #20232a;
+  background: solid;
+  top: 0;
+  width: 100%;
+  padding: 0;
+  height: 5vh;
+  padding: 0.5vh;
+} 
+
+#App-footer {
+  z-index: 5;
+  position: fixed;
+  bottom: 0;
+  background: solid;
+  background-color: #20232a;
+  height: 3vh;
+  width: 100%;
 }

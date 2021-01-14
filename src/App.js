@@ -4,16 +4,19 @@ import Header from './components/Header';
 import Body from './components/Body';
 import Footer from './components/Footer';
 
-/*  */
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+      <div id="App-header">
         <Header></Header>
+      </div>
+      <div id="App-body">
         <Body></Body>
+      </div>
+      <div id="App-footer">
         <Footer></Footer>
-      </header>
+      </div>
     </div>
   );
 }
