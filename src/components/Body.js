@@ -2,23 +2,17 @@ import React, { Component } from 'react';
 import Modal from 'react-modal';
 import exitButtonImg from '../images/exitButton.png';
 import './Body.css';
-import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import FolderIcon from '@material-ui/icons/Folder';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Divider from '@material-ui/core/Divider';
+import AddIcon from '@material-ui/icons/Add';
 
 const modalStyles = {
   content: {
@@ -31,18 +25,29 @@ const modalStyles = {
   }
 };
 
-
+// chosenClasses[][0] - id of class
+// chosenClasses[][1] - name of class
+// chosenClasses[][2] - department name of class
+// chosenClasses[][3] - credits of class
 
 export default class Body extends Component {
   state = {
     isModalVisible: false,
     credits: 0,
-    chosenClasses: []
+    chosenClasses: [["1", "one", "dept1", "2"], ["2", "two", "dept2", "3"], ["3", "three", "dept3", "4"]]
   };
 
-  removeElement = (e) => {
-    var index = this.state.chosenClasses.findIndex(a => a === e);
-    console.log(e);
+  findElementInArray(e){
+    for (var i = 0; i < this.state.chosenClasses.length; i++) {
+      if (this.state.chosenClasses[i][0] == e) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  async removeElement(e){
+    var index = this.findElementInArray(e);
     console.log(index);
     var temparray = this.state.chosenClasses;
     temparray.splice(index, 1);
@@ -51,16 +56,16 @@ export default class Body extends Component {
     })
   }
   
-  generate = (e) => {
+  generate(e){
     return (<ListItem>
-      <ListItemAvatar>
+      <ListItemIcon>
         <Avatar>
-          <FolderIcon />
+          <FolderIcon/>
         </Avatar>
-      </ListItemAvatar>
-      <ListItemText primary={e}/>
+      </ListItemIcon>
+      <ListItemText primary={e[1]} secondary={e[2] + " - " + e[3] + " credits"} />
       <ListItemSecondaryAction>
-        <IconButton edge="end" aria-label="delete" onClick={() => this.removeElement(e)}>
+        <IconButton edge="end" aria-label="delete" onClick={() => this.removeElement(e[0])}>
           <DeleteIcon/>
         </IconButton>
       </ListItemSecondaryAction>
@@ -107,8 +112,14 @@ export default class Body extends Component {
             <div>
               <List>
                 {this.state.chosenClasses.map(e => this.generate(e))}
+              <Divider style={{margin: "2vh"}}/>
+              <ListItem button onClick={this.handleModalOpen}>
+                <ListItemIcon>
+                  <AddIcon />
+                </ListItemIcon>
+                <ListItemText primary="Add course" />
+              </ListItem>
               </List>
-              <Divider/>
             </div>
           </div>
           <div id="list-footer-container">
