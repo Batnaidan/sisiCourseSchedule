@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import Modal from 'react-modal';
-import exitButtonImg from '../images/exitButton.png';
 import './Body.css';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -13,17 +11,9 @@ import FolderIcon from '@material-ui/icons/Folder';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Divider from '@material-ui/core/Divider';
 import AddIcon from '@material-ui/icons/Add';
+import Rodal from 'rodal';
+import 'rodal/lib/rodal.css';
 
-const modalStyles = {
-  content: {
-    display: 'flex',
-    padding: '2rem',
-    width: '60vw',
-    height: '75vh',
-    margin: 'auto',
-    overflow: 'visible'
-  }
-};
 
 // chosenClasses[][0] - id of class
 // chosenClasses[][1] - name of class
@@ -32,7 +22,7 @@ const modalStyles = {
 
 export default class Body extends Component {
   state = {
-    isModalVisible: false,
+    visible: false,
     credits: 0,
     chosenClasses: [["1", "one", "dept1", "2"], ["2", "two", "dept2", "3"], ["3", "three", "dept3", "4"]]
   };
@@ -78,34 +68,17 @@ export default class Body extends Component {
     })
   }
 
-  handleModalOpen(){
-    this.setState({
-      isModalVisible: true,
-    });
-  };
+  show(){
+    this.setState({ visible: true });
+  }
 
-  handleModalClose(){
-    this.setState({
-      isModalVisible: false,
-    });
-  };
+  hide(){
+    this.setState({ visible: false });
+  }
   
   render() {
     return (
       <div id="outer-div">
-        <Modal 
-          isOpen={this.state.isModalVisible}
-          style={modalStyles}
-          contentLabel="Example Modal">
-          <p>test</p>
-          <img 
-            src={exitButtonImg} 
-            name="isModalTrue" 
-            onClick={this.handleModalClose} 
-            id="exit-button"
-            alt="exit-button">
-          </img>
-        </Modal>
         <div id="list-container">
           <p id="guide-text">Хичээлээ сонгоно уу</p>
           <div id="list-wrapper">
@@ -113,7 +86,7 @@ export default class Body extends Component {
               <List>
                 {this.state.chosenClasses.map(e => this.generate(e))}
               <Divider style={{margin: "2vh"}}/>
-              <ListItem button onClick={this.handleModalOpen}>
+              <ListItem button onClick={this.show.bind(this)}>
                 <ListItemIcon>
                   <AddIcon />
                 </ListItemIcon>
@@ -126,6 +99,11 @@ export default class Body extends Component {
             <p id="credits-text">{this.state.credits} / 21 credits</p>
             <button>Calculate</button>
           </div>
+        </div>
+        <div id="modal-container">
+          <Rodal visible={this.state.visible} onClose={this.hide.bind(this)}>
+            <div>Content</div>
+          </Rodal>
         </div>
         <div id="graph-container"></div>
       </div>
