@@ -14,7 +14,7 @@ import 'rodal/lib/rodal.css';
 //   },
 // };
 
-export default class ModalComponent extends Component {
+export default class Modal extends Component {
   state = {
     done: false,
     data: null,
