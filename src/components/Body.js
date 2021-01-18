@@ -1,19 +1,14 @@
 import React, { Component } from 'react';
 import './Body.css';
+import ListCourse from './ListCourse';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import FolderIcon from '@material-ui/icons/Folder';
-import DeleteIcon from '@material-ui/icons/Delete';
 import Divider from '@material-ui/core/Divider';
 import AddIcon from '@material-ui/icons/Add';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
-
 
 // chosenClasses[][0] - id of class
 // chosenClasses[][1] - name of class
@@ -24,58 +19,55 @@ export default class Body extends Component {
   state = {
     visible: false,
     credits: 0,
-    chosenClasses: [["1", "one", "dept1", "2"], ["2", "two", "dept2", "3"], ["3", "three", "dept3", "4"]]
+    chosenClasses: [
+      ['1', 'one', 'dept1', '2'],
+      ['2', 'two', 'dept2', '3'],
+      ['3', 'three', 'dept3', '4'],
+    ],
   };
 
-  findElementInArray(e){
-    for (var i = 0; i < this.state.chosenClasses.length; i++) {
-      if (this.state.chosenClasses[i][0] == e) {
-        return i;
-      }
-    }
-    return -1;
-  }
+  // findElementInArray(e){
+  //   for (var i = 0; i < this.state.chosenClasses.length; i++) {
+  //     if (this.state.chosenClasses[i][0] == e) {
+  //       return i;
+  //     }
+  //   }
+  //   return -1;
+  // }
 
-  async removeElement(e){
-    var index = this.findElementInArray(e);
-    console.log(index);
-    var temparray = this.state.chosenClasses;
-    temparray.splice(index, 1);
+  // async removeElement(e){
+  //   var index = this.findElementInArray(e);
+  //   console.log(index);
+  //   var temparray = this.state.chosenClasses;
+  //   temparray.splice(index, 1);
+  //   this.setState({
+  //     chosenClasses: temparray
+  //   })
+  // }
+
+  removeCourse(i) {
+    let temp = this.state.chosenClasses.slice();
+    temp.splice(i, 1);
+    console.log(i);
     this.setState({
-      chosenClasses: temparray
-    })
-  }
-  
-  generate(e){
-    return (<ListItem>
-      <ListItemIcon>
-        <Avatar>
-          <FolderIcon/>
-        </Avatar>
-      </ListItemIcon>
-      <ListItemText primary={e[1]} secondary={e[2] + " - " + e[3] + " credits"} />
-      <ListItemSecondaryAction>
-        <IconButton edge="end" aria-label="delete" onClick={() => this.removeElement(e[0])}>
-          <DeleteIcon/>
-        </IconButton>
-      </ListItemSecondaryAction>
-    </ListItem>);
+      chosenClasses: temp,
+    });
   }
 
-  addCredits(creds){
+  addCredits(creds) {
     this.setState({
-      credits: this.state.credits + parseInt(creds)
-    })
+      credits: this.state.credits + parseInt(creds),
+    });
   }
 
-  show(){
+  show() {
     this.setState({ visible: true });
   }
 
-  hide(){
+  hide() {
     this.setState({ visible: false });
   }
-  
+
   render() {
     return (
       <div id="outer-div">
@@ -84,14 +76,21 @@ export default class Body extends Component {
           <div id="list-wrapper">
             <div>
               <List>
-                {this.state.chosenClasses.map(e => this.generate(e))}
-              <Divider style={{margin: "2vh"}}/>
-              <ListItem button onClick={this.show.bind(this)}>
-                <ListItemIcon>
-                  <AddIcon />
-                </ListItemIcon>
-                <ListItemText primary="Add course" />
-              </ListItem>
+                {this.state.chosenClasses.map((e, i) => (
+                  <ListCourse
+                    e={this.state.chosenClasses[i]}
+                    removeCourses={this.removeCourse.bind(this)}
+                    key={i}
+                    index={i}
+                  ></ListCourse>
+                ))}
+                <Divider style={{ margin: '2vh' }} />
+                <ListItem button onClick={this.show.bind(this)}>
+                  <ListItemIcon>
+                    <AddIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Add course" />
+                </ListItem>
               </List>
             </div>
           </div>
