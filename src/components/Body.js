@@ -48,7 +48,6 @@ export default class Body extends Component {
   removeCourse(i) {
     let temp = this.state.chosenClasses.slice();
     temp.splice(i, 1);
-    console.log(i);
     this.setState({
       chosenClasses: temp,
     });
