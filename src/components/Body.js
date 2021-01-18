@@ -7,8 +7,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import AddIcon from '@material-ui/icons/Add';
-import Rodal from 'rodal';
-import 'rodal/lib/rodal.css';
+import ModalComponent from './Modal';
 
 // chosenClasses[][0] - id of class
 // chosenClasses[][1] - name of class
@@ -99,9 +98,10 @@ export default class Body extends Component {
           </div>
         </div>
         <div id="modal-container">
-          <Rodal visible={this.state.visible} onClose={this.hide.bind(this)}>
-            <div>Content</div>
-          </Rodal>
+          <ModalComponent
+            visible={this.state.visible}
+            onClose={this.hide.bind(this)}
+          ></ModalComponent>
         </div>
         <div id="graph-container"></div>
       </div>
