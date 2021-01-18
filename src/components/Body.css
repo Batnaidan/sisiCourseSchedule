@@ -1,4 +1,4 @@
-#exitButton {
+#exit-button {
     position: absolute;
     right: -0.6rem;
     top: -0.6rem;
@@ -7,6 +7,41 @@
     cursor: pointer;
 }
 
-#exitButton:hover {
+#exit-button:hover {
     opacity: 50%;
+}
+
+#outer-div {
+    height: 100%;
+}
+
+#guide-text {
+    color: #282c34;
+    margin-top: 0;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+#list-container {
+    padding: 2vh;
+    margin: auto;
+    height: 80vh;
+    width: 40vw;
+    background-color: #f3f3f3;
+    position: relative;
+}
+
+.bulletIcon {
+    width: 30px;
+}
+
+#list-footer-container {
+    position: absolute;
+    bottom: 2vh;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#credits-text {
+    font-size: 20px;
 }
