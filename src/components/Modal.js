@@ -19,11 +19,21 @@ export default class Modal extends Component {
     done: false,
     data: null,
   };
-
+  insertCourse = () => {
+    this.props.chosenCourses.push('selected shit');
+  };
   render() {
     return (
-      <Rodal visible={this.props.visible} onClose={this.props.onClose}>
-        <div>CONTENT</div>
+      <Rodal
+        width={25}
+        height={20}
+        measure={'rem'}
+        visible={this.props.visible}
+        onClose={this.props.onClose}
+        duration={200}
+      >
+        <div></div>
+        <button onClick={this.insertCourse}>Select</button>
       </Rodal>
     );
   }
