@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import TreeView from '@material-ui/lab/TreeView';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import TreeItem from '@material-ui/lab/TreeItem';
 // import exitButtonImg from '../images/exitButton.png';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
+import api from '../api';
+import './Modal.css';
 
 // const modalStyles = {
 //   content: {
@@ -13,26 +20,47 @@ import 'rodal/lib/rodal.css';
 //     overflow: 'visible',
 //   },
 // };
+var data = null;
 
 export default class Modal extends Component {
-  state = {
-    done: false,
-    data: null,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: true,
+      deps: null,
+    };
+  }
+
+  async componentDidMount() {
+    data = (await api.getDep()).data.data;
+    // this.setState({
+    //   isLoading: false,
+    // });
+  }
+
   insertCourse = () => {
-    this.props.chosenCourses.push('selected shit');
+    console.log(this.data);
+    // this.props.chosenCourses.push('selected shit');
   };
+
   render() {
     return (
       <Rodal
-        width={25}
-        height={20}
+        width={50}
+        height={30}
         measure={'rem'}
         visible={this.props.visible}
         onClose={this.props.onClose}
         duration={200}
       >
-        <div></div>
+        {
+          this.state.isLoading ? 'NOT DONE' : data
+          // <TreeView className="root">
+          //   {this.state.deps.map((el, index) => (
+          //     <TreeItem nodeId={index} label={el[0]}></TreeItem>
+          //   ))}
+          // </TreeView>
+        }
         <button onClick={this.insertCourse}>Select</button>
       </Rodal>
     );
