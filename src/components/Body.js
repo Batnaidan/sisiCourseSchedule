@@ -400,7 +400,7 @@ export default class Body extends Component {
             <p id="credits-text">{this.state.credits} / 21 credits</p>
             <Button
               variant="contained"
-              style={{ 'background-color': '#79cae0' }}
+              style={{ backgroundColor: '#79cae0' }}
               size="large"
               onClick={() => this.generate_schedules(0)}
             >

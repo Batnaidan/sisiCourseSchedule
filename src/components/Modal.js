@@ -10,32 +10,31 @@ import 'rodal/lib/rodal.css';
 import api from '../api';
 import './Modal.css';
 
-// const modalStyles = {
-//   content: {
-//     display: 'flex',
-//     padding: '2rem',
-//     width: '60vw',
-//     height: '75vh',
-//     margin: 'auto',
-//     overflow: 'visible',
-//   },
-// };
-var data = null;
+const useStyles = makeStyles({
+  root: {
+    height: 216,
+    flexGrow: 1,
+    maxWidth: 300,
+  },
+});
 
 export default class Modal extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
-      deps: null,
+      subSchool: null,
     };
   }
+  classes = useStyles();
 
   async componentDidMount() {
-    data = (await api.getDep()).data.data;
-    // this.setState({
-    //   isLoading: false,
-    // });
+    let data = (await api.getDep()).data.data;
+    console.log(data);
+    this.setState({
+      isLoading: false,
+      subSchool: data,
+    });
   }
 
   insertCourse = () => {
@@ -53,14 +52,23 @@ export default class Modal extends Component {
         onClose={this.props.onClose}
         duration={200}
       >
-        {
-          this.state.isLoading ? 'NOT DONE' : data
-          // <TreeView className="root">
-          //   {this.state.deps.map((el, index) => (
-          //     <TreeItem nodeId={index} label={el[0]}></TreeItem>
-          //   ))}
-          // </TreeView>
-        }
+        {this.state.isLoading ? (
+          'Loading'
+        ) : (
+          <TreeView
+            className="root"
+            defaultCollapseIcon={<ExpandMoreIcon />}
+            defaultExpandIcon={<ChevronRightIcon />}
+          >
+            {this.state.subSchool.map((el, index) => (
+              <TreeItem nodeId={`${index}`} label={el.Namem}>
+                {el.dep.map((dep) => (
+                  <TreeItem nodeId={dep.ID} label={dep.Namem}></TreeItem>
+                ))}
+              </TreeItem>
+            ))}
+          </TreeView>
+        )}
         <button onClick={this.insertCourse}>Select</button>
       </Rodal>
     );
