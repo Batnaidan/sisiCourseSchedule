@@ -134,7 +134,7 @@ let chosenCourse = [
 
 // Array to hold possible schedules
 
-let schedules = [];
+let schedules = [0];
 
 export default class Body extends Component {
   state = {
@@ -156,7 +156,6 @@ export default class Body extends Component {
   // eq of time: (Weekday - 1) * 18 + timeid
 
   timetable = new Array(126).fill(0);
-  classes_indexed = 0;
 
   // Algorithm to generate schedule and store in array schedules
   // go through classes one by one, every instance individually... recursive function checking cases every time.
@@ -201,7 +200,8 @@ export default class Body extends Component {
 
   } */
 
-  // Checks if course overlaps with chosenCourse array schedule
+  // Checks if course overlaps with chosenCourse array schedule.
+  // Rreturns true if overlapping, false if not.
 
   checkOverlap = (timeidx, timelen) => {
     for (let j = 0; j < timelen; j++) {
@@ -226,6 +226,14 @@ export default class Body extends Component {
     return arr;
   };
 
+  // Function to push timetable array to schedule, because array.push() is not working lmao idk why the fuck
+  pushToSchedule = () => {
+    let len = schedules.push([]);
+    for(let x = 0; x < 126; x++) {
+      schedules[len-1].push(this.timetable[x]);
+    }
+  }
+
   // Function to run when ci value is 4
 
   whenCiIs4 = (idx) => {
@@ -240,7 +248,7 @@ export default class Body extends Component {
           this.timetable[timeidx + j] = chosenCourse[idx].row[i];
         }
         if (idx == chosenCourse.length - 1) {
-          schedules.push(this.timetable);
+          this.pushToSchedule();
         } else {
           this.generate_schedules(idx + 1);
         }
@@ -251,12 +259,196 @@ export default class Body extends Component {
     }
   };
 
-  // TODO: remove timetable indexes after calling recursive function
+  whenGridIs0 = (idx) => {
+    // get arrays of indexes of classes by type
+
+    let lecArr = this.findIndexInChosenCoursesByType(idx, 1);
+    let semArr = this.findIndexInChosenCoursesByType(idx, 2);
+    let labArr = this.findIndexInChosenCoursesByType(idx, 3);
+    if (lecArr.length > 0) {
+      // has Lecture
+
+      for (let i of lecArr) {
+        let timeidx =
+          (Number(chosenCourse[idx].row[i].weekday) - 1) * 18 +
+          Number(chosenCourse[idx].row[i].timeid) -
+          1;
+        let timelen = Number(chosenCourse[idx].row[i].durtime);
+        if (this.checkOverlap(timeidx, timelen) == false) {
+          for (let k = 0; k < timelen; k++) {
+            this.timetable[timeidx + k] = chosenCourse[idx].row[i];
+          }
+          if (semArr.length > 0) {
+            // lecture with sem
+
+            for (let j of semArr) {
+              let sem_timeidx =
+                (Number(chosenCourse[idx].row[j].weekday) - 1) * 18 +
+                Number(chosenCourse[idx].row[j].timeid) -
+                1;
+              let sem_timelen = Number(chosenCourse[idx].row[j].durtime);
+              if (this.checkOverlap(sem_timeidx, sem_timelen) == false) {
+                for (let k = 0; k < sem_timelen; k++) {
+                  this.timetable[sem_timeidx + k] = chosenCourse[idx].row[j];
+                }
+                if (labArr.length > 0) {
+                  // lecture with sem and lab
+
+                  for (let jj of labArr) {
+                    let lab_timeidx =
+                      (Number(chosenCourse[idx].row[jj].weekday) - 1) * 18 +
+                      Number(chosenCourse[idx].row[jj].timeid) -
+                      1;
+                    let lab_timelen = Number(
+                      chosenCourse[idx].row[jj].durtime
+                    );
+                    if (
+                      this.checkOverlap(lab_timeidx, lab_timelen) == false
+                    ) {
+                      for (let k = 0; k < lab_timelen; k++) {
+                        this.timetable[lab_timeidx + k] = chosenCourse[idx].row[jj];
+                      }
+                      if (idx == chosenCourse.length - 1) {
+                        this.pushToSchedule();
+                      } else {
+                        this.generate_schedules(idx + 1);
+                      }
+                      for (let k = 0; k < lab_timelen; k++) {
+                        this.timetable[lab_timeidx + k] = 0;
+                      }
+                    }
+                  }
+                  for (let k = 0; k < sem_timelen; k++) {
+                    this.timetable[sem_timeidx + k] = 0;
+                  }
+                } else {
+                  // lecture with sem, no lab
+
+                  if (idx == chosenCourse.length - 1) {
+                    this.pushToSchedule();
+                  } else {
+                    this.generate_schedules(idx + 1);
+                  }
+                  for (let k = 0; k < sem_timelen; k++) {
+                    this.timetable[sem_timeidx + k] = 0;
+                  }
+                }
+              }
+            }
+            for (let k = 0; k < timelen; k++) {
+              this.timetable[timeidx + k] = 0;
+            }
+          } else if (labArr.length > 0) {
+            // lecture with lab
+
+            for (let i of labArr) {
+              let lab_timeidx =
+                (Number(chosenCourse[idx].row[i].weekday) - 1) * 18 +
+                Number(chosenCourse[idx].row[i].timeid) -
+                1;
+              let lab_timelen = Number(
+                chosenCourse[idx].row[i].durtime
+              );
+              if (
+                this.checkOverlap(lab_timeidx, lab_timelen) == false
+              ) {
+                for (let k = 0; k < lab_timelen; k++) {
+                  this.timetable[timeidx + k] =
+                    chosenCourse[idx].row[i];
+                }
+                if (idx == chosenCourse.length - 1) {
+                  this.pushToSchedule();
+                } else {
+                  this.generate_schedules(idx + 1);
+                }
+                for (let k = 0; k < lab_timelen; k++) {
+                  this.timetable[lab_timeidx + k] = 0;
+                }
+              }
+            }
+            for (let k = 0; k < timelen; k++) {
+              this.timetable[timeidx + k] = 0;
+            }
+          } else {
+            // only lecture
+
+            if (idx == chosenCourse.length - 1) {
+              this.pushToSchedule();
+            } else {
+              this.generate_schedules(idx + 1);
+            }
+            for (let k = 0; k < timelen; k++) {
+              this.timetable[timeidx + k] = 0;
+            }
+          }
+        }
+      }
+    } else {
+      // no lecture
+
+      if (semArr.length > 0){
+        // only seminars
+
+        for(let i of semArr){
+          let sem_timeidx =
+          (Number(chosenCourse[idx].row[i].weekday) - 1) * 18 +
+          Number(chosenCourse[idx].row[i].timeid) -
+          1;
+          let sem_timelen = Number(chosenCourse[idx].row[i].durtime);
+          if (this.checkOverlap(sem_timeidx, sem_timelen) == false) {
+            for (let k = 0; k < sem_timelen; k++) {
+              this.timetable[sem_timeidx + k] = chosenCourse[idx].row[i];
+            }
+            if (idx == chosenCourse.length - 1) {
+              this.pushToSchedule();
+            } else {
+              this.generate_schedules(idx + 1);
+            }
+            for (let k = 0; k < sem_timelen; k++) {
+              this.timetable[sem_timeidx + k] = 0;
+            }
+          }
+        }
+      } else if (labArr.length > 0){
+        // only labs
+
+        for(let i of labArr){
+          let lab_timeidx =
+          (Number(chosenCourse[idx].row[i].weekday) - 1) * 18 +
+          Number(chosenCourse[idx].row[i].timeid) -
+          1;
+          let lab_timelen = Number(chosenCourse[idx].row[i].durtime);
+          if (this.checkOverlap(lab_timeidx, lab_timelen) == false) {
+            for (let k = 0; k < lab_timelen; k++) {
+              this.timetable[lab_timeidx + k] = chosenCourse[idx].row[i];
+            }
+            if (idx == chosenCourse.length - 1) {
+              this.pushToSchedule();
+            } else {
+              this.generate_schedules(idx + 1);
+            }
+            for (let k = 0; k < lab_timelen; k++) {
+              this.timetable[lab_timeidx + k] = 0;
+            }
+          }
+        }
+      } else {
+        console.log("This course is empty but it passed the empty check somehow. Idx: " + idx);
+      }
+    }
+  }
+
+  whenGridIsNot0 = (idx) => {
+    
+    let lecArr = this.findIndexInChosenCoursesByType(idx, 1);
+    let semArr = this.findIndexInChosenCoursesByType(idx, 2);
+    let labArr = this.findIndexInChosenCoursesByType(idx, 3);
+  }
+
   // TODO: save memory by adding class info on the first index of timetables,
   // ----- then adding the amount of indexes needed to go back to get the class info to the latter indexes
 
   generate_schedules = (idx) => {
-    console.log(idx + ' ' + chosenCourse.length);
     if (
       !Array.isArray(chosenCourse) ||
       !chosenCourse.length ||
@@ -269,79 +461,9 @@ export default class Body extends Component {
       if (this.findIndexInChosenCoursesByType(idx, 4).length > 0) {
         this.whenCiIs4(idx);
       } else if (chosenCourse[idx].row[0].grid == '0') {
-        // get arrays of indexes of classes by type
-
-        let lecArr = this.findIndexInChosenCoursesByType(idx, 1);
-        let semArr = this.findIndexInChosenCoursesByType(idx, 2);
-        let labArr = this.findIndexInChosenCoursesByType(idx, 3);
-        if (lecArr.length > 0) {
-          for (let i of lecArr) {
-            let timeidx =
-              (Number(chosenCourse[idx].row[i].weekday) - 1) * 18 +
-              Number(chosenCourse[idx].row[i].timeid) -
-              1;
-            let timelen = Number(chosenCourse[idx].row[i].durtime);
-            if (this.checkOverlap(timeidx, timelen) == false) {
-              for (let j = 0; j < timelen; j++) {
-                this.timetable[timeidx + j] = chosenCourse[idx].row[i];
-              }
-              if (semArr.length > 0) {
-                // lecture with sem
-
-                for (let j of semArr) {
-                  let sem_timeidx =
-                    (Number(chosenCourse[idx].row[j].weekday) - 1) * 18 +
-                    Number(chosenCourse[idx].row[j].timeid) -
-                    1;
-                  let sem_timelen = Number(chosenCourse[idx].row[j].durtime);
-                  if (this.checkOverlap(sem_timeidx, sem_timelen) == false) {
-                    for (let k = 0; k < sem_timelen; k++) {
-                      this.timetable[timeidx + k] = chosenCourse[idx].row[j];
-                    }
-                    if (labArr.length > 0) {
-                      // lecture with sem and lab
-
-                      for (let jj of labArr) {
-                        let lab_timeidx =
-                          (Number(chosenCourse[idx].row[jj].weekday) - 1) * 18 +
-                          Number(chosenCourse[idx].row[jj].timeid) -
-                          1;
-                        let lab_timelen = Number(
-                          chosenCourse[idx].row[jj].durtime
-                        );
-                        if (
-                          this.checkOverlap(lab_timeidx, lab_timelen) == false
-                        ) {
-                          for (let k = 0; k < lab_timelen; k++) {
-                            this.timetable[timeidx + k] =
-                              chosenCourse[idx].row[jj];
-                          }
-                          if (idx == chosenCourse.length - 1) {
-                            schedules.push(this.timetable);
-                          } else {
-                            this.generate_schedules(idx + 1);
-                          }
-                          for (let k = 0; k < lab_timelen; k++) {
-                            this.timetable[timeidx + k] = 0;
-                          }
-                        }
-                      }
-                    } else {
-                    }
-                  }
-                }
-              } else if (labArr.length > 0) {
-                // lecture with lab
-              } else {
-                // only lecture
-              }
-            }
-          }
-        } else {
-          // no lecture
-        }
+        this.whenGridIs0(idx);
       } else {
-        // grid not 0
+        this.whenGridIsNot0(idx);
       }
     } else {
       this.generate_schedules(idx + 1);
@@ -402,10 +524,11 @@ export default class Body extends Component {
               variant="contained"
               style={{ backgroundColor: '#79cae0' }}
               size="large"
-              onClick={() => this.generate_schedules(0)}
+              onClick={() => {schedules = []; this.generate_schedules(0); window.scrollTo({bottom:0, behavior:'smooth'})}}
             >
               Generate Schedule
             </Button>
+            <Button onClick={() => {for ( let i = 0; i<126; i++){console.log(schedules[0][i]);}}}>Test</Button>
           </div>
         </div>
         {this.state.visible ? (
