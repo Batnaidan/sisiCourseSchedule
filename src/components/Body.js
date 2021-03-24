@@ -1671,7 +1671,8 @@ export default class Body extends Component {
               onClick={() => {
                 for (let j = 0; j < schedules.length; j++) {
                   for (let i = 0; i < 126; i++) {
-                    if (schedules[j][i] != 0) console.log(1);
+                    if (schedules[j][i] != 0) setTimeout(console.log(1), 50);
+                    else setTimeout(console.log(0), 50);
                   }
                   console.log(
                     '------------------------------------------------------------------------'

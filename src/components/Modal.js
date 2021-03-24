@@ -38,7 +38,6 @@ export default class Modal extends Component {
       subSchool: data,
     });
   }
-
   insertCourse = (course) => {
     course.id = course.row[0].snx;
     course.cre = course.row[0].cre;
