@@ -9,6 +9,7 @@ import Divider from '@material-ui/core/Divider';
 import AddIcon from '@material-ui/icons/Add';
 import Modal from './Modal';
 import Button from '@material-ui/core/Button';
+import TimeTable from './TimeTable';
 
 // chosenCourse stores data from classes, indexes specify individual courses
 // and the value contains "data" object. Data object's children include:
@@ -1129,7 +1130,7 @@ export default class Body extends Component {
     case 4.3.1:
     course has 2 different teachers on one class so that lectures grids are same and seminars grid are same
 
-  }
+  }tengisdogshit
 
   } */
 
@@ -1183,7 +1184,7 @@ export default class Body extends Component {
         if (idx == chosenCourse.length - 1) {
           this.pushToSchedule();
         } else {
-          setTimeout(this.generate_schedules(idx + 1), 100);
+          setTimeout(this.generate_schedules(idx + 1), 500);
         }
         for (let j = 0; j < timelen; j++) {
           this.timetable[timeidx + j] = 0;
@@ -1241,7 +1242,7 @@ export default class Body extends Component {
                       if (idx == chosenCourse.length - 1) {
                         this.pushToSchedule();
                       } else {
-                        setTimeout(this.generate_schedules(idx + 1), 100);
+                        setTimeout(this.generate_schedules(idx + 1), 500);
                       }
                       for (let k = 0; k < lab_timelen; k++) {
                         this.timetable[lab_timeidx + k] = 0;
@@ -1257,7 +1258,7 @@ export default class Body extends Component {
                   if (idx == chosenCourse.length - 1) {
                     this.pushToSchedule();
                   } else {
-                    setTimeout(this.generate_schedules(idx + 1), 100);
+                    setTimeout(this.generate_schedules(idx + 1), 500);
                   }
                   for (let k = 0; k < sem_timelen; k++) {
                     this.timetable[sem_timeidx + k] = 0;
@@ -1284,7 +1285,7 @@ export default class Body extends Component {
                 if (idx == chosenCourse.length - 1) {
                   this.pushToSchedule();
                 } else {
-                  setTimeout(this.generate_schedules(idx + 1), 100);
+                  setTimeout(this.generate_schedules(idx + 1), 500);
                 }
                 for (let k = 0; k < lab_timelen; k++) {
                   this.timetable[lab_timeidx + k] = 0;
@@ -1300,7 +1301,7 @@ export default class Body extends Component {
             if (idx == chosenCourse.length - 1) {
               this.pushToSchedule();
             } else {
-              setTimeout(this.generate_schedules(idx + 1), 100);
+              setTimeout(this.generate_schedules(idx + 1), 500);
             }
             for (let k = 0; k < timelen; k++) {
               this.timetable[timeidx + k] = 0;
@@ -1327,7 +1328,7 @@ export default class Body extends Component {
             if (idx == chosenCourse.length - 1) {
               this.pushToSchedule();
             } else {
-              setTimeout(this.generate_schedules(idx + 1), 100);
+              setTimeout(this.generate_schedules(idx + 1), 500);
             }
             for (let k = 0; k < sem_timelen; k++) {
               this.timetable[sem_timeidx + k] = 0;
@@ -1350,7 +1351,7 @@ export default class Body extends Component {
             if (idx == chosenCourse.length - 1) {
               this.pushToSchedule();
             } else {
-              setTimeout(this.generate_schedules(idx + 1), 100);
+              setTimeout(this.generate_schedules(idx + 1), 500);
             }
             for (let k = 0; k < lab_timelen; k++) {
               this.timetable[lab_timeidx + k] = 0;
@@ -1457,7 +1458,7 @@ export default class Body extends Component {
                         if (idx == chosenCourse.length - 1) {
                           this.pushToSchedule();
                         } else {
-                          setTimeout(this.generate_schedules(idx + 1), 100);
+                          setTimeout(this.generate_schedules(idx + 1), 500);
                         }
                         for (let k = 0; k < lab_timelen; k++) {
                           this.timetable[lab_timeidx + k] = 0;
@@ -1473,7 +1474,7 @@ export default class Body extends Component {
                     if (idx == chosenCourse.length - 1) {
                       this.pushToSchedule();
                     } else {
-                      setTimeout(this.generate_schedules(idx + 1), 100);
+                      setTimeout(this.generate_schedules(idx + 1), 500);
                     }
                     for (let k = 0; k < sem_timelen; k++) {
                       this.timetable[sem_timeidx + k] = 0;
@@ -1500,7 +1501,7 @@ export default class Body extends Component {
                   if (idx == chosenCourse.length - 1) {
                     this.pushToSchedule();
                   } else {
-                    setTimeout(this.generate_schedules(idx + 1), 100);
+                    setTimeout(this.generate_schedules(idx + 1), 500);
                   }
                   for (let k = 0; k < lab_timelen; k++) {
                     this.timetable[lab_timeidx + k] = 0;
@@ -1516,7 +1517,7 @@ export default class Body extends Component {
               if (idx == chosenCourse.length - 1) {
                 this.pushToSchedule();
               } else {
-                setTimeout(this.generate_schedules(idx + 1), 100);
+                setTimeout(this.generate_schedules(idx + 1), 500);
               }
               for (let k = 0; k < timelen; k++) {
                 this.timetable[timeidx + k] = 0;
@@ -1543,7 +1544,7 @@ export default class Body extends Component {
               if (idx == chosenCourse.length - 1) {
                 this.pushToSchedule();
               } else {
-                setTimeout(this.generate_schedules(idx + 1), 100);
+                setTimeout(this.generate_schedules(idx + 1), 500);
               }
               for (let k = 0; k < sem_timelen; k++) {
                 this.timetable[sem_timeidx + k] = 0;
@@ -1566,7 +1567,7 @@ export default class Body extends Component {
               if (idx == chosenCourse.length - 1) {
                 this.pushToSchedule();
               } else {
-                setTimeout(this.generate_schedules(idx + 1), 100);
+                setTimeout(this.generate_schedules(idx + 1), 500);
               }
               for (let k = 0; k < lab_timelen; k++) {
                 this.timetable[lab_timeidx + k] = 0;
@@ -1601,7 +1602,7 @@ export default class Body extends Component {
         this.whenGridIsNot0(idx);
       }
     } else {
-      setTimeout(this.generate_schedules(idx + 1), 50);
+      setTimeout(this.generate_schedules(idx + 1), 500);
     }
   };
 
@@ -1671,8 +1672,8 @@ export default class Body extends Component {
               onClick={() => {
                 for (let j = 0; j < schedules.length; j++) {
                   for (let i = 0; i < 126; i++) {
-                    if (schedules[j][i] != 0) setTimeout(console.log(1), 50);
-                    else setTimeout(console.log(0), 50);
+                    if (schedules[j][i] != 0) setTimeout(console.log(1), 500);
+                    else setTimeout(console.log(0), 500);
                   }
                   console.log(
                     '------------------------------------------------------------------------'
@@ -1694,7 +1695,9 @@ export default class Body extends Component {
             ></Modal>
           </div>
         ) : null}
-        <div id="graph-container"></div>
+        <div id="graph-container">
+          <TimeTable>a</TimeTable>
+        </div>
       </div>
     );
   }
