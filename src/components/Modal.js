@@ -38,17 +38,29 @@ export default class Modal extends Component {
       subSchool: data,
     });
   }
-  insertCourse = (course) => {
-    course.id = course.row[0].snx;
-    course.cre = course.row[0].cre;
+
+  changeCourse = (course) => {
     this.state.selectedCourses.push(course);
+    console.log(this.state.selectedCourses[0].nm);
+  };
+  insertCourse = () => {
+    this.props.chosenCourses.push(this.state.selectedCourses[0]);
+    this.props.chosenClasses.push([
+      this.state.selectedCourses[0].v,
+      this.state.selectedCourses[0].nm +
+        ' - ' +
+        this.state.selectedCourses[0].row[0].snx,
+      'cat',
+      this.state.selectedCourses[0].row[0].cre,
+    ]);
     console.log(this.state.selectedCourses);
+    this.props.onClose();
   };
 
   renderCourse = async (depId) => {
     let data = (await api.getAllCourses(depId)).data.data;
     this.setState({
-      didClick: false,
+      didClick: true,
       courses: data,
     });
     console.log(data);
@@ -66,23 +78,25 @@ export default class Modal extends Component {
         {this.state.isLoading ? (
           'Loading'
         ) : (
-          <TreeView
-            className="root"
-            defaultCollapseIcon={<ExpandMoreIcon />}
-            defaultExpandIcon={<ChevronRightIcon />}
-          >
-            {this.state.subSchool.map((el, index) => (
-              <TreeItem nodeId={`${index}`} label={el.Namem}>
-                {el.dep.map((dep) => (
-                  <TreeItem
-                    nodeId={dep.ID}
-                    label={dep.Namem}
-                    onClick={() => this.renderCourse(dep.ID)}
-                  ></TreeItem>
-                ))}
-              </TreeItem>
-            ))}
-          </TreeView>
+          <div className="container">
+            <TreeView
+              style={{ maxWidth: 500 }}
+              defaultCollapseIcon={<ExpandMoreIcon />}
+              defaultExpandIcon={<ChevronRightIcon />}
+            >
+              {this.state.subSchool.map((el, index) => (
+                <TreeItem nodeId={`${index}`} label={el.Namem}>
+                  {el.dep.map((dep) => (
+                    <TreeItem
+                      nodeId={dep.ID}
+                      label={dep.Namem}
+                      onClick={() => this.renderCourse(dep.ID)}
+                    ></TreeItem>
+                  ))}
+                </TreeItem>
+              ))}
+            </TreeView>
+          </div>
         )}
         {this.state.didClick ? (
           <div>
@@ -91,37 +105,21 @@ export default class Modal extends Component {
               <Select
                 defaultValue=""
                 id="Courses"
+                multiple
+
                 // multiple
                 // value={this.state.selectedCourses}
               >
                 {this.state.courses.map((el, index) => (
-                  <MenuItem value={index} onClick={() => this.insertCourse(el)}>
+                  <MenuItem value={index} onClick={() => this.changeCourse(el)}>
+                    <Checkbox
+                      checked={this.state.selectedCourses.indexOf(el) > -1}
+                    ></Checkbox>
                     {el.nm} - {el.row[0].snx}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
-            {/*  */}
-            {/* <FormControl className={classes.formControl}>
-              <InputLabel id="demo-mutiple-checkbox-label">Tag</InputLabel>
-              <Select
-                labelId="demo-mutiple-checkbox-label"
-                id="demo-mutiple-checkbox"
-                multiple
-                value={personName}
-                onChange={handleChange}
-                input={<Input />}
-                renderValue={(selected) => selected.join(', ')}
-                MenuProps={MenuProps}
-              >
-                {names.map((name) => (
-                  <MenuItem key={name} value={name}>
-                    <Checkbox checked={personName.indexOf(name) > -1} />
-                    <ListItemText primary={name} />
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl> */}
           </div>
         ) : (
           <div>
@@ -135,7 +133,12 @@ export default class Modal extends Component {
             </FormControl>
           </div>
         )}
-        <Button variant="contained" color="primary" style={{ marginTop: 10 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ marginTop: 10 }}
+          onClick={this.insertCourse}
+        >
           Done
         </Button>
       </Rodal>

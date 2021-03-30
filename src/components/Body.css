@@ -23,6 +23,7 @@
 }
 
 #list-container {
+  height: 85vh;
   padding: 2vh;
   margin: auto;
   width: 60rem;
@@ -50,7 +51,9 @@
 }
 
 #graph-container {
-  margin: 7rem;
+  margin: 5rem;
+  margin-left: 10rem;
+  margin-right: 10rem;
 }
 
 @media (max-width: 520px) {

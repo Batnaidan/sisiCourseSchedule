@@ -22,10 +22,10 @@
 
 #App-footer {
   z-index: 5;
-  position: fixed;
+  position: relative;
   bottom: 0;
   background: solid;
   background-color: #20232a;
-  height: 3vh;
+  height: 6vh;
   width: 100%;
 }

@@ -1,5 +1,10 @@
 .root {
   height: 5000;
   flex-grow: 1;
-  max-width: 100;
+  max-width: 400;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
