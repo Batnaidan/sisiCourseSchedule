@@ -70,7 +70,7 @@ export default class TimeTable extends Component {
       timetableProps: 0,
     });
     this.setState({
-      timetableProps: initialState,
+      timetableProps: { initialState },
     });
   }
 
