@@ -1,0 +1,40 @@
+.pageButton {
+    margin: 0.2rem;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.pageButton:hover {
+    cursor: pointer;
+    opacity: 30%;
+}
+
+.page-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 2rem;
+}
+
+.table-container {
+    margin-top: 2rem;
+}
+
+#pagesLength {
+    font-size: 16px;
+    margin: auto;
+}
+
+.pageForm {
+    position:relative;
+    bottom: 38%;
+    right:0;
+    left:0;
+}
+
+#formWrapper {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    top: 20%;
+}

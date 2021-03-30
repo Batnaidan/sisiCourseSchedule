@@ -1084,6 +1084,7 @@ export default class Body extends Component {
       ['2', 'two', 'dept2', '3'],
       ['3', 'three', 'dept3', '4'],
     ],
+    generated: false
   };
 
   // temp array to hold schedule of one class
@@ -1664,6 +1665,7 @@ export default class Body extends Component {
                 schedules = [];
                 this.generate_schedules(0);
                 window.scrollTo({ bottom: 0, behavior: 'smooth' });
+                setTimeout(this.setState({generated: true}), 5000);
               }}
             >
               Generate Schedule
@@ -1691,12 +1693,12 @@ export default class Body extends Component {
             <Modal
               visible={this.state.visible}
               onClose={this.hide.bind(this)}
-              chosenCourses={chosenCourse}
+              chosenCourses={chosenCourse} 
             ></Modal>
           </div>
         ) : null}
         <div id="graph-container">
-          <TimeTable>a</TimeTable>
+          <TimeTable dataFromParent={schedules} />
         </div>
       </div>
     );
