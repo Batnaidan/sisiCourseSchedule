@@ -21,7 +21,6 @@ const initialState = {
     return (
       <div
         {...defaultAttributes}
-        key={hour}
         style={{
           ...defaultAttributes.style,
           textAlign: 'center',
@@ -33,15 +32,25 @@ const initialState = {
     );
   },
   renderEvent(event, defaultAttributes, styles) {
+    let type = parseInt(event.type);
+    console.log(type);
+    let color = [
+      "#000000",
+      "#e67e96",
+      "#f0a000",
+      "#8bbf43",
+      "#666666"
+    ];
     return (
       <div
         {...defaultAttributes}
         title={event.name}
-        key={event.id}
         style={{
           ...defaultAttributes.style,
-          background: '#000',
+          backgroundColor: color[type],
+          fontSize: '14px'
         }}
+        isClassNode="true"
       >
         <span className={styles.event_info}>[ {event.name} ]</span>
         <span className={styles.event_info}>
@@ -64,8 +73,13 @@ export default class TimeTable extends Component {
     };
   }
 
-  reset() {
-    console.log(initialState);
+  removeClassEvents(){
+    var classNodes = document.querySelectorAll('div[isClassNode="true"]');
+    classNodes.forEach(node => node.remove());
+  }
+
+  reset(){
+    console.log("reset");
     this.setState({
       timetableProps: 0,
     });
@@ -75,6 +89,7 @@ export default class TimeTable extends Component {
   }
 
   handleTableData = () => {
+    console.log("handleTableData");
     if (
       this.state.generated === false ||
       !(
@@ -83,8 +98,6 @@ export default class TimeTable extends Component {
       )
     )
       return;
-
-    this.reset();
 
     // Stores hid of class, to check if next nodes contain the same class or different class
     // in other words, checks if the class in the next node is the same as this one
@@ -110,14 +123,14 @@ export default class TimeTable extends Component {
             'saturday',
             'sunday',
           ];
-          let temp = this.state.timetableProps;
+          let temp = initialState;
           temp.events[day[parseInt(i / 18)]].push({
             id: id,
             name:
               this.state.schedules[this.state.pageIndex][i].s_name +
               ' ' +
               this.state.schedules[this.state.pageIndex][i].e,
-            type: 'custom',
+            type: this.state.schedules[this.state.pageIndex][i].ci,
             startTime: moment(startTime),
             endTime: moment(endTime),
           });
@@ -147,14 +160,14 @@ export default class TimeTable extends Component {
               'saturday',
               'sunday',
             ];
-            let temp = this.state.timetableProps;
+            let temp = initialState;
             temp.events[day[parseInt(i / 18)]].push({
               id: id,
               name:
                 this.state.schedules[this.state.pageIndex][i].s_name +
                 ' ' +
                 this.state.schedules[this.state.pageIndex][i].e,
-              type: 'custom',
+              type: this.state.schedules[this.state.pageIndex][i].ci,
               startTime: moment(startTime),
               endTime: moment(endTime),
             });
@@ -190,6 +203,7 @@ export default class TimeTable extends Component {
   };
 
   changeIndex = (dog) => {
+    console.log("changeIndex(" + dog + ")");
     this.setState((state, props) => {
       if (
         state.pageIndex + dog < 1 ||
@@ -204,26 +218,36 @@ export default class TimeTable extends Component {
           parseInt(state.pageIndex == '' ? 0 : state.pageIndex) + parseInt(dog),
       };
     });
+    this.removeClassEvents();
+    this.reset();
     this.handleTableData();
   };
 
   handleSubmit = (e) => {
-    e.preventDefault();
+    console.log("handleSubmit");
+    if (e)
+      e.preventDefault();
     console.log(
       this.state.pageIndex,
       this.state.generated,
       this.state.schedules[this.state.pageIndex]
     );
+    this.removeClassEvents();
+    this.reset();
     this.handleTableData();
   };
 
   componentDidUpdate(prevProps) {
+    console.log("ComponentDidUpdate");
     if (prevProps.dataFromParent !== this.props.dataFromParent) {
       this.setState({
-        possiblePages: this.props.dataFromParent.length,
+        possiblePages: this.props.dataFromParent.length - 1,
         schedules: this.props.dataFromParent,
         generated: true,
       });
+      setTimeout(() => {
+        this.handleSubmit();
+      }, 500);
     }
   }
 
@@ -248,7 +272,7 @@ export default class TimeTable extends Component {
             <div id="pagesLength-container">
               <p id="pagesLength">
                 {' '}
-                &nbsp; / {this.props.dataFromParent.length}
+                &nbsp; / {this.props.dataFromParent.length - 1}
               </p>
             </div>
           </div>
