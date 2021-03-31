@@ -53,8 +53,8 @@ export default class Modal extends Component {
       'cat',
       this.state.selectedCourses[0].row[0].cre,
     ]);
-    this.props.credits += this.state.selectedCourses[0].row[0].cre;
-    console.log(this.state.selectedCourses);
+    console.log(this.props.chosenCourses);
+    this.props.changeCredit(this.state.selectedCourses[0].row[0].cre);
     this.props.onClose();
   };
 
@@ -106,7 +106,6 @@ export default class Modal extends Component {
               <Select
                 defaultValue=""
                 id="Courses"
-                multiple
 
                 // multiple
                 // value={this.state.selectedCourses}

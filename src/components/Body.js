@@ -599,15 +599,14 @@ export default class Body extends Component {
                   ></ListCourse>
                 ))}
                 <Divider style={{ margin: '2vh' }} />
-                {this.state.credits === 21 ? (
-                  null
-                ) : (
-                <ListItem button onClick={this.show.bind(this)}>
-                  <ListItemIcon>
-                    <AddIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Add course" />
-                </ListItem>)}
+                {this.state.credits === 21 ? null : (
+                  <ListItem button onClick={this.show.bind(this)}>
+                    <ListItemIcon>
+                      <AddIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Add course" />
+                  </ListItem>
+                )}
               </List>
             </div>
           </div>
@@ -637,7 +636,7 @@ export default class Body extends Component {
               onClose={this.hide.bind(this)}
               chosenCourses={chosenCourse}
               chosenClasses={this.state.chosenClasses}
-              cred={this.state.credits}
+              changeCredit={(creds) => this.addCredits(creds)}
             ></Modal>
           </div>
         ) : null}
