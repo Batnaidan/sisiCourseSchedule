@@ -53,6 +53,7 @@ export default class Modal extends Component {
       'cat',
       this.state.selectedCourses[0].row[0].cre,
     ]);
+    this.props.credits += this.state.selectedCourses[0].row[0].cre;
     console.log(this.state.selectedCourses);
     this.props.onClose();
   };
