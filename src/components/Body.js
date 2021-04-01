@@ -231,7 +231,7 @@ export default class Body extends Component {
               let lab_timelen = Number(chosenCourse[idx].row[i].durtime);
               if (this.checkOverlap(lab_timeidx, lab_timelen) == false) {
                 for (let k = 0; k < lab_timelen; k++) {
-                  timetable[timeidx + k] = chosenCourse[idx].row[i];
+                  timetable[lab_timeidx + k] = chosenCourse[idx].row[i];
                 }
                 if (idx == chosenCourse.length - 1) {
                   this.pushToSchedule();
