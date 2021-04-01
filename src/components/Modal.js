@@ -12,9 +12,6 @@ import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
 import api from '../api';
 import './Modal.css';
-
-import Input from '@material-ui/core/Input';
-import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 // import RenderCourse from './RenderCourse';
 
@@ -25,46 +22,57 @@ export default class Modal extends Component {
       isLoading: true,
       subSchool: null,
       didClick: false,
-      courses: null,
+      selectedDep: null,
       selectedCourses: [],
+      isFull: false,
     };
   }
 
   async componentDidMount() {
     let data = (await api.getDep()).data.data;
-    console.log(data);
     this.setState({
       isLoading: false,
       subSchool: data,
     });
   }
 
-  changeCourse = (course) => {
-    this.state.selectedCourses.push(course);
-    console.log(this.state.selectedCourses[0].nm);
-  };
+  // changeCourse = (course) => {
+  //   this.state.selectedCourses.push(course);
+  //   console.log(this.state.selectedCourses[0].nm);
+  // };
   insertCourse = () => {
-    this.props.chosenCourses.push(this.state.selectedCourses[0]);
-    this.props.chosenClasses.push([
-      this.state.selectedCourses[0].v,
-      this.state.selectedCourses[0].nm +
-        ' - ' +
-        this.state.selectedCourses[0].row[0].snx,
-      'cat',
-      this.state.selectedCourses[0].row[0].cre,
-    ]);
-    console.log(this.props.chosenCourses);
-    this.props.changeCredit(this.state.selectedCourses[0].row[0].cre);
+    console.log(this.state.selectedCourses);
+    this.state.selectedCourses.forEach((el) => {
+      if (this.props.credits + parseInt(this.data[el].row[0].cre) <= 21) {
+        this.props.chosenCourses.push(this.data[el]);
+        this.props.chosenClasses.push([
+          this.data[el].v,
+          this.data[el].nm + ' - ' + this.data[el].row[0].snx,
+          this.state.selectedDep,
+          this.data[el].row[0].cre,
+        ]);
+        console.log(this.props.chosenCourses);
+        this.props.changeCredit(this.data[el].row[0].cre);
+      } else {
+        this.setState({
+          isFull: true,
+        });
+      }
+    });
     this.props.onClose();
   };
-
-  renderCourse = async (depId) => {
-    let data = (await api.getAllCourses(depId)).data.data;
+  handleSelect = async (event) => {
+    this.setState((state) => ({
+      selectedCourses: event.target.value,
+    }));
+  };
+  renderCourse = async (depId, depName) => {
+    this.data = (await api.getAllCourses(depId)).data.data;
     this.setState({
       didClick: true,
-      courses: data,
+      selectedDep: depName,
     });
-    console.log(data);
+    // console.log();
   };
   render() {
     return (
@@ -91,7 +99,7 @@ export default class Modal extends Component {
                     <TreeItem
                       nodeId={dep.ID}
                       label={dep.Namem}
-                      onClick={() => this.renderCourse(dep.ID)}
+                      onClick={() => this.renderCourse(dep.ID, dep.Namem)}
                     ></TreeItem>
                   ))}
                 </TreeItem>
@@ -100,27 +108,25 @@ export default class Modal extends Component {
           </div>
         )}
         {this.state.didClick ? (
-          <div>
-            <FormControl style={{ width: 400 }}>
-              <InputLabel htmlFor="Courses">Courses</InputLabel>
-              <Select
-                defaultValue=""
-                id="Courses"
-
-                // multiple
-                // value={this.state.selectedCourses}
-              >
-                {this.state.courses.map((el, index) => (
-                  <MenuItem value={index} onClick={() => this.changeCourse(el)}>
-                    <Checkbox
-                      checked={this.state.selectedCourses.indexOf(el) > -1}
-                    ></Checkbox>
-                    {el.nm} - {el.row[0].snx}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </div>
+          <FormControl style={{ width: 400 }}>
+            <InputLabel htmlFor="Courses">Courses</InputLabel>
+            <Select
+              id="Courses"
+              multiple
+              value={this.state.selectedCourses}
+              onChange={this.handleSelect}
+            >
+              {this.data.map((el, index) => (
+                // onClick={() => this.changeCourse(el)}
+                <MenuItem key={index} value={index}>
+                  <Checkbox
+                    checked={this.state.selectedCourses.indexOf(index) > -1}
+                  ></Checkbox>
+                  {el.nm} - {el.row[0].snx}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         ) : (
           <div>
             <FormControl style={{ width: 400 }}>
@@ -133,14 +139,25 @@ export default class Modal extends Component {
             </FormControl>
           </div>
         )}
-        <Button
-          variant="contained"
-          color="primary"
-          style={{ marginTop: 10 }}
-          onClick={this.insertCourse}
-        >
-          Done
-        </Button>
+        {this.state.isFull ? (
+          <Button
+            variant="contained"
+            style={{ marginTop: 10 }}
+            color="primary"
+            disabled
+          >
+            pisda
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ marginTop: 10 }}
+            onClick={this.insertCourse}
+          >
+            Done
+          </Button>
+        )}
       </Rodal>
     );
   }

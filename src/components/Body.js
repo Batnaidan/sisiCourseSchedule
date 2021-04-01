@@ -562,16 +562,16 @@ export default class Body extends Component {
     let temp = this.state.chosenClasses.slice();
     chosenCourse.splice(i, 1);
     temp.splice(i, 1);
-    console.log(chosenCourse);
     this.setState({
+      credits: this.state.credits - this.state.chosenClasses[i][3], //subtracting credits when removed
       chosenClasses: temp,
     });
   }
 
   addCredits(creds) {
-    this.setState({
-      credits: this.state.credits + parseInt(creds),
-    });
+    this.setState((baseState) => ({
+      credits: baseState.credits + parseInt(creds),
+    }));
   }
 
   show() {
@@ -637,6 +637,7 @@ export default class Body extends Component {
               chosenCourses={chosenCourse}
               chosenClasses={this.state.chosenClasses}
               changeCredit={(creds) => this.addCredits(creds)}
+              credits={this.state.credits}
             ></Modal>
           </div>
         ) : null}
