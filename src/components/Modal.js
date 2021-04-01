@@ -41,6 +41,7 @@ export default class Modal extends Component {
     let credit = this.props.credits;
     this.state.selectedCourses.forEach((el) => {
       if (credit + parseInt(this.data[el].row[0].cre) <= 21) {
+        el--;
         this.props.chosenCourses.push(this.data[el]);
         this.props.chosenClasses.push([
           this.data[el].v,
@@ -65,6 +66,7 @@ export default class Modal extends Component {
       didClick: true,
       selectedDep: depName,
     });
+    console.log(this.data);
     // console.log();
   };
   render() {
@@ -108,12 +110,14 @@ export default class Modal extends Component {
               multiple
               value={this.state.selectedCourses}
               onChange={this.handleSelect}
+              renderValue={(selected) => selected.join(', ')}
+              defaultValue="Hello"
             >
               {this.data.map((el, index) => (
                 // onClick={() => this.changeCourse(el)}
-                <MenuItem key={index} value={index}>
+                <MenuItem key={index} value={index + 1}>
                   <Checkbox
-                    checked={this.state.selectedCourses.indexOf(index) > -1}
+                    checked={this.state.selectedCourses.indexOf(index + 1) > -1}
                   ></Checkbox>
                   {el.nm} - {el.row[0].snx}
                 </MenuItem>
@@ -124,7 +128,7 @@ export default class Modal extends Component {
           <div>
             <FormControl style={{ width: 400 }}>
               <InputLabel htmlFor="Courses">Courses</InputLabel>
-              <Select defaultValue="" id="Courses" autoWidth>
+              <Select id="Courses">
                 <MenuItem value="">
                   <em>Select Department</em>
                 </MenuItem>
