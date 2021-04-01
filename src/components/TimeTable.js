@@ -5,6 +5,13 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import './TimeTable.css';
 import moment from 'moment';
 
+const classTypes = [
+  '',
+  'Лекц',
+  'Семинар',
+  'Лаб'
+]
+
 const initialState = {
   events: {
     monday: [],
@@ -24,7 +31,7 @@ const initialState = {
         style={{
           ...defaultAttributes.style,
           textAlign: 'center',
-          textDecoration: 'underline',
+          textDecoration: 'underline'
         }}
       >
         {hour}
@@ -45,7 +52,8 @@ const initialState = {
         }}
         isclassnode="true"
       >
-        <span className={styles.event_info}>[ {event.name} ]</span>
+        <span className={styles.event_info}>[ {classTypes[event.type] } ]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {event.bair}</span>
+        <span className={styles.event_info}>{event.name}</span>
         <span className={styles.event_info}>
           {event.startTime.format('HH:mm')} - {event.endTime.format('HH:mm')}
         </span>
@@ -120,9 +128,12 @@ export default class TimeTable extends Component {
             id: id,
             name:
               this.state.schedules[this.state.pageIndex][i].s_name +
-              ' ' +
+              ' - ' +
               this.state.schedules[this.state.pageIndex][i].e,
             type: this.state.schedules[this.state.pageIndex][i].ci,
+            bair: this.state.schedules[this.state.pageIndex][i].r_bname +
+              ' байр, ' + 
+              this.state.schedules[this.state.pageIndex][i].r_name,
             startTime: moment(startTime),
             endTime: moment(endTime),
           });
@@ -158,9 +169,12 @@ export default class TimeTable extends Component {
               id: id,
               name:
                 this.state.schedules[this.state.pageIndex][i].s_name +
-                ' ' +
+                ' - ' +
                 this.state.schedules[this.state.pageIndex][i].e,
               type: this.state.schedules[this.state.pageIndex][i].ci,
+              bair: this.state.schedules[this.state.pageIndex][i].r_bname +
+                ' байр, ' + 
+                this.state.schedules[this.state.pageIndex][i].r_name,
               startTime: moment(startTime),
               endTime: moment(endTime),
             });
