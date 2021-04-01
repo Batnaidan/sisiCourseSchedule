@@ -233,7 +233,7 @@ export default class Body extends Component {
                             let lab_timelen = Number(chosenCourse[idx].row[i].durtime);
                             if (this.checkOverlap(lab_timeidx, lab_timelen) == false) {
                                 for (let k = 0; k < lab_timelen; k++) {
-                                    timetable[timeidx + k] = chosenCourse[idx].row[i];
+                                    timetable[lab_timeidx + k] = chosenCourse[idx].row[i];
                                 }
                                 if (idx == chosenCourse.length - 1) {
                                     this.pushToSchedule();
@@ -510,15 +510,15 @@ export default class Body extends Component {
                 } else if (labArr.length > 0) {
                     // only labs
 
-                    for (let i of labArr) {
+                    for (let kk of labArr) {
                         let lab_timeidx =
-                            (Number(chosenCourse[idx].row[i].weekday) - 1) * 18 +
-                            Number(chosenCourse[idx].row[i].timeid) -
+                            (Number(chosenCourse[idx].row[kk].weekday) - 1) * 18 +
+                            Number(chosenCourse[idx].row[kk].timeid) -
                             1;
-                        let lab_timelen = Number(chosenCourse[idx].row[i].durtime);
+                        let lab_timelen = Number(chosenCourse[idx].row[kk].durtime);
                         if (this.checkOverlap(lab_timeidx, lab_timelen) == false) {
                             for (let k = 0; k < lab_timelen; k++) {
-                                timetable[lab_timeidx + k] = chosenCourse[idx].row[i];
+                                timetable[lab_timeidx + k] = chosenCourse[idx].row[kk];
                             }
                             if (idx == chosenCourse.length - 1) {
                                 this.pushToSchedule();
@@ -624,7 +624,7 @@ export default class Body extends Component {
                                     schedules = [];
                                     this.generate_schedules(0);
                                     window.scrollTo({ bottom: 0, behavior: 'smooth' });
-                                    setTimeout(() => this.setState({ generated: true }), 500);
+                                    setTimeout(() => this.setState({generated: true}), 500);
                                 }}
                             >
                                 Generate Schedule

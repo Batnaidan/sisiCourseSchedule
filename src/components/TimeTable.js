@@ -228,7 +228,9 @@ export default class TimeTable extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.dataFromParent !== this.props.dataFromParent) {
+    console.log(prevProps);
+    if (prevProps.dataFromParent != this.props.dataFromParent) {
+      console.log("aasdasdasdasdasd");
       this.setState({
         possiblePages: this.props.dataFromParent.length - 1,
         schedules: this.props.dataFromParent,
@@ -236,9 +238,7 @@ export default class TimeTable extends Component {
       });
       this.removeClassEvents();
       this.reset();
-      setTimeout(() => {
-        this.handleSubmit();
-      }, 500);
+      setTimeout(() => this.handleSubmit(), 500);
     }
   }
 
