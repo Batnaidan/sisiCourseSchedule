@@ -36,14 +36,11 @@ export default class Modal extends Component {
     });
   }
 
-  // changeCourse = (course) => {
-  //   this.state.selectedCourses.push(course);
-  //   console.log(this.state.selectedCourses[0].nm);
-  // };
   insertCourse = () => {
     console.log(this.state.selectedCourses);
+    let credit = this.props.credits;
     this.state.selectedCourses.forEach((el) => {
-      if (this.props.credits + parseInt(this.data[el].row[0].cre) <= 21) {
+      if (credit + parseInt(this.data[el].row[0].cre) <= 21) {
         this.props.chosenCourses.push(this.data[el]);
         this.props.chosenClasses.push([
           this.data[el].v,
@@ -51,7 +48,7 @@ export default class Modal extends Component {
           this.state.selectedDep,
           this.data[el].row[0].cre,
         ]);
-        console.log(this.props.chosenCourses);
+        credit += parseInt(this.data[el].row[0].cre);
         this.props.changeCredit(this.data[el].row[0].cre);
       } else {
         this.setState({
@@ -140,23 +137,27 @@ export default class Modal extends Component {
           </div>
         )}
         {this.state.isFull ? (
-          <Button
-            variant="contained"
-            style={{ marginTop: 10 }}
-            color="primary"
-            disabled
-          >
-            pisda
-          </Button>
+          <div>
+            <Button
+              variant="contained"
+              style={{ marginTop: 10 }}
+              color="primary"
+              disabled
+            >
+              pisda
+            </Button>
+          </div>
         ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ marginTop: 10 }}
-            onClick={this.insertCourse}
-          >
-            Done
-          </Button>
+          <div>
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ marginTop: 10 }}
+              onClick={this.insertCourse}
+            >
+              Done
+            </Button>
+          </div>
         )}
       </Rodal>
     );

@@ -599,7 +599,7 @@ export default class Body extends Component {
                   ></ListCourse>
                 ))}
                 <Divider style={{ margin: '2vh' }} />
-                {this.state.credits === 21 ? null : (
+                {this.state.credits >= 21 ? null : (
                   <ListItem button onClick={this.show.bind(this)}>
                     <ListItemIcon>
                       <AddIcon />
