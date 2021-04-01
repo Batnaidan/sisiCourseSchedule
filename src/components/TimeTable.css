@@ -2,6 +2,8 @@
     margin: 0.2rem;
     margin-top: auto;
     margin-bottom: auto;
+    margin-left: 0.7rem;
+    transform: scale(1.5);
 }
 
 .pageButton:hover {

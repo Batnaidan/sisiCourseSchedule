@@ -64,6 +64,7 @@ export default class TimeTable extends Component {
       generated: false,
       timetableProps: initialState,
     };
+    this.reset = this.reset.bind(this);
   }
 
   removeClassEvents() {
@@ -197,6 +198,7 @@ export default class TimeTable extends Component {
   };
 
   changeIndex(dog) {
+    dog = parseInt(dog);
     if (
       this.state.pageIndex + dog < 1 ||
       this.state.generated === false ||
@@ -211,7 +213,7 @@ export default class TimeTable extends Component {
       return;
     }
     this.setState((state) => ({
-      pageIndex: state.pageIndex + dog,
+      pageIndex: parseInt(state.pageIndex) + dog,
     }));
     this.reset();
     this.removeClassEvents();
@@ -249,7 +251,6 @@ export default class TimeTable extends Component {
             className="pageButton"
           ></ArrowBackIosIcon>
           <div id="formWrapper">
-            <form className="pageForm">
             <form className="pageForm" onSubmit={this.handleSubmit.bind(this)}>
               <input
                 value={[this.state.pageIndex]}
@@ -257,7 +258,7 @@ export default class TimeTable extends Component {
                 onSubmit={this.handleSubmit}
                 style={{ maxWidth: 30 }}
               ></input>
-              <button type="submit" onClick={this.handleSubmit} hidden></button>
+              <button type="submit" onClick={this.handleSubmit.bind(this)} hidden></button>
             </form>
             <div id="pagesLength-container">
               <p id="pagesLength">
