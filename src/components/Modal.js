@@ -50,10 +50,6 @@ export default class Modal extends Component {
         ]);
         credit += parseInt(this.data[el].row[0].cre);
         this.props.changeCredit(this.data[el].row[0].cre);
-      } else {
-        this.setState({
-          isFull: true,
-        });
       }
     });
     this.props.onClose();
@@ -136,29 +132,16 @@ export default class Modal extends Component {
             </FormControl>
           </div>
         )}
-        {this.state.isFull ? (
-          <div>
-            <Button
-              variant="contained"
-              style={{ marginTop: 10 }}
-              color="primary"
-              disabled
-            >
-              pisda
-            </Button>
-          </div>
-        ) : (
-          <div>
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ marginTop: 10 }}
-              onClick={this.insertCourse}
-            >
-              Done
-            </Button>
-          </div>
-        )}
+        <div>
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ marginTop: 10 }}
+            onClick={this.insertCourse}
+          >
+            Done
+          </Button>
+        </div>
       </Rodal>
     );
   }
