@@ -250,6 +250,7 @@ export default class TimeTable extends Component {
           ></ArrowBackIosIcon>
           <div id="formWrapper">
             <form className="pageForm">
+            <form className="pageForm" onSubmit={this.handleSubmit.bind(this)}>
               <input
                 value={[this.state.pageIndex]}
                 onChange={this.handleOnChange}
